@@ -1,12 +1,12 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Grpc.Core;
-using Microservicio_Administracion.Data;
-using Microservicio_Administracion.Administracion;
-using Microservicio_Administracion.Models;
+using Consultorio_Medico_Administracion.Data;
+using Consultorio_Medico_Administracion.Administracion;
+using Consultorio_Medico_Administracion.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Microservicio_Administracion.Protos
+namespace Consultorio_Medico_Administracion.Protos
 {
     public class AdministracionServiceImpl : AdministracionService.AdministracionServiceBase
     {

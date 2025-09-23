@@ -24,4 +24,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Consulltorio_Medico_Administracion\Consulltorio_Medico_Administracion.csproj" />
+  </ItemGroup>
+
 </Project>

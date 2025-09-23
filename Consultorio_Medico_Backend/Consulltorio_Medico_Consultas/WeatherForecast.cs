@@ -1,4 +1,4 @@
-namespace Consultas_Medicas
+namespace Consulltorio_Medico_Consultas
 {
     public class WeatherForecast
     {

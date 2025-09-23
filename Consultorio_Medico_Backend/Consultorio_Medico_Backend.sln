@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultorio_Medico_ApiGatew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consulltorio_Medico_Autenticacion", "Consulltorio_Medico_Autenticacion\Consulltorio_Medico_Autenticacion.csproj", "{437AF7B4-2DA4-4579-B7F4-1D22CCC19352}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consulltorio_Medico_Administracion", "Consulltorio_Medico_Administracion\Consulltorio_Medico_Administracion.csproj", "{351B450B-299A-42D7-BB1B-E2D1C1D88122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{437AF7B4-2DA4-4579-B7F4-1D22CCC19352}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437AF7B4-2DA4-4579-B7F4-1D22CCC19352}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437AF7B4-2DA4-4579-B7F4-1D22CCC19352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{351B450B-299A-42D7-BB1B-E2D1C1D88122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{351B450B-299A-42D7-BB1B-E2D1C1D88122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{351B450B-299A-42D7-BB1B-E2D1C1D88122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{351B450B-299A-42D7-BB1B-E2D1C1D88122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

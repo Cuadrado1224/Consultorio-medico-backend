@@ -1,0 +1,6 @@
+@Consulltorio_Medico_Autenticacion_HostAddress = http://localhost:5203
+
+GET {{Consulltorio_Medico_Autenticacion_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

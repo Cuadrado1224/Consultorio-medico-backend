@@ -1,6 +1,6 @@
 ﻿namespace Consulltorio_Medico_Consultas.Controllers
 {
-    public class WeatherForecastController
+    public class PacienteController
     {
     }
 }

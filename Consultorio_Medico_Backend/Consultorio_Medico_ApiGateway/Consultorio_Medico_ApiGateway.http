@@ -1,0 +1,6 @@
+@Consultorio_Medico_ApiGateway_HostAddress = http://localhost:5272
+
+GET {{Consultorio_Medico_ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

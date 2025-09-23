@@ -26,11 +26,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Consulltorio_Medico_Administracion\Consulltorio_Medico_Administracion.csproj" />
     <ProjectReference Include="..\Consulltorio_Medico_Autenticacion\Consulltorio_Medico_Autenticacion.csproj" />
+    <ProjectReference Include="..\Consulltorio_Medico_Consultas\Consulltorio_Medico_Consultas.csproj" />
+	  <Protobuf Include="protos\Login.proto" GrpcServices="Client" />
+	  <Protobuf Include="protos\UsuariosService.proto" GrpcServices="Client" />
+	  <Protobuf Include="protos\AdministracionService.proto" GrpcServices="Client" />
+	  <Protobuf Include="protos\paciente.proto" GrpcServices="Client" />
+	  <Protobuf Include="protos\ConsultaMedicas.proto" GrpcServices="Client" />
+
   </ItemGroup>
 
 </Project>

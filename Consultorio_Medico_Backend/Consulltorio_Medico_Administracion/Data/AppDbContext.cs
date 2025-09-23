@@ -1,7 +1,8 @@
-﻿using Microservicio_Administracion.Models;
+﻿
+using Consultorio_Medico_Administracion.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Microservicio_Administracion.Data
+namespace Consultorio_Medico_Administracion.Data
 {
     public class AppDbContext : DbContext
     {

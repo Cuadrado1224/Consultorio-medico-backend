@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6be71054-f8bb-4eef-89a7-03518b8b4d03</UserSecretsId>
-	  <RootNamespace>Microservicio_Administracion</RootNamespace>
+	  <RootNamespace>Consultorio_Medico_Administracion</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

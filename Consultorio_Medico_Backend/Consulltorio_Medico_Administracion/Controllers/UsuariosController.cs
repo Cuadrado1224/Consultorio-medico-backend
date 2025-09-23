@@ -1,10 +1,11 @@
-﻿using Microservicio_Administracion.Data;
-using Microservicio_Administracion.Models;
+﻿
+using Consultorio_Medico_Administracion.Data;
+using Consultorio_Medico_Administracion.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Microservicio_Administracion.Controllers
+namespace Consultorio_Medico_Administracion.Controllers
 {
     [Route("api/[controller]")]
     [Authorize(Policy ="TipoEmpleadoPolitica")]

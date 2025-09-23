@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option csharp_namespace = "Consulltorio_Medico_Autenticacion.Protos";
+
+package Auth;
+
+service UsuarioService{
+	rpc ValidarUsuario (UsuarioLogin) returns (UsuarioLoginRespuesta);
+    rpc RegistrarUsuario (UsuarioRegistro) returns (Usuario);
+    rpc BorrarUsuario(UsuarioBorrar) returns (RespuestaVacia);
+    rpc SeleccionarUsuarios(RespuestaVacia) returns (ListaUsuarios);
+}
+
+
+message ListaUsuarios{
+    repeated Usuario usuarios=1;
+}
+
+message UsuarioLogin {
+  string nombre_usuario = 1;
+  string contrasenia = 2;
+}
+message UsuarioLoginRespuesta {
+  bool EsValido = 1;
+  Usuario Usuario = 2;
+}
+
+message UsuarioRegistro{
+  string nombre_usuario = 1;
+  string contrasenia = 2;
+  int32 empleadoId=4;
+}
+
+message UsuarioBorrar{
+    int32 id=1;
+}
+
+message Usuario{
+ int32 Id=1;
+ string nombre_usuario=2;
+ string contrasenia=3;
+ int32 empleadoId=4;
+ Empleado empleado=5;
+}
+message Empleado{
+	    int32 Id=1;
+        int32 centro_medicoID=2;
+        int32 tipo_empleadoID=3;
+        string nombre=4;
+        string cedula=5;
+        int32 especialidadID=6;
+        string telefono=7;
+        string email=8;
+        double salario=9;
+
+        Centro_Medico Centro_Medico=10;
+        Tipo_Empleado Tipo_Empleado=11;
+        Especialidad Especialidad=12;
+}
+message Especialidad{
+         int32 Id=1;
+        string especialidad=2;
+}
+message Centro_Medico{
+        int32 Id=1;
+        string nombre=2; 
+        string ciudad=3;
+        string direccion=4;
+}
+message Tipo_Empleado{
+    int32 Id=1;
+    string tipo=2;
+}
+
+message RespuestaVacia {
+}

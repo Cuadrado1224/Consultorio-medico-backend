@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microservicio_Administracion.Data;
+using Microservicio_Administracion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microservicio_Administracion.Data;
-using Microservicio_Administracion.Models;
-using NuGet.Versioning;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Microservicio_Administracion.Controllers
 {

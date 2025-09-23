@@ -15,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Consulltorio_Medico_Administracion\Consulltorio_Medico_Administracion.csproj" />
+	  <Protobuf Include="Protos\UsuarioService.proto" GrpcServices="Client" />
+	  <Protobuf Include="Protos\Login.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using Consulltorio_Medico_Administracion.Protos;
+﻿
+using Consulltorio_Medico_Administracion.Protos;
+using Consulltorio_Medico_Autenticacion.Protos;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;

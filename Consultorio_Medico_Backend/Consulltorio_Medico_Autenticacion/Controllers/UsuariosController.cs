@@ -1,7 +1,14 @@
-﻿using Grpc.Net.Client;
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Consulltorio_Medico_Autenticacion.Auth;
+using Microsoft.EntityFrameworkCore;
+using Grpc.Net.Client;
 using Consulltorio_Medico_Administracion.Protos;
+using Consulltorio_Medico_Autenticacion.Auth;
 
 namespace Consulltorio_Medico_Autenticacion.Controllers
 {
@@ -43,4 +50,3 @@ namespace Consulltorio_Medico_Autenticacion.Controllers
         }
     }
 }
-

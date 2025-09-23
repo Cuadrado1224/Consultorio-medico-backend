@@ -3,8 +3,8 @@
 option csharp_namespace = "Consulltorio_Medico_Consultas"; // Ajusta el namespace para que sea más específico
 
 // Importamos los protos necesarios
-import "Protos/Paciente.Protos"; // Para el mensaje PacienteModel
-import "Protos/AdministracionService.Protos"; // Para el mensaje Empleado y sus relaciones
+import "Protos/Paciente.proto"; // Para el mensaje PacienteModel
+import "Protos/AdministracionService.proto"; // Para el mensaje Empleado y sus relaciones
 
 // Mensaje para una consulta médica
 message Consulta {

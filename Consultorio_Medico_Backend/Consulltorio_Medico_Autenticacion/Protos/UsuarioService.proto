@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Consulltorio_Medico_Autenticacion.Protos";
+option csharp_namespace = "Consulltorio_Medico_Administracion.Protos";
 
 package Auth;
 
@@ -74,3 +74,4 @@ message Tipo_Empleado{
 
 message RespuestaVacia {
 }
+

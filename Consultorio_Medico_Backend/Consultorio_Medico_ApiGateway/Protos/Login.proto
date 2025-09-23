@@ -1,8 +1,8 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Consulltorio_Medico_Autenticacion.Protos";;
+option csharp_namespace = "Consulltorio_Medico_Autenticacion.Protos";
 
-import "Protos/UsuariosService.proto";
+import "Protos/UsuarioService.proto";
 
 service LoginService{
 	rpc Login(Auth.UsuarioLogin) returns (Token);

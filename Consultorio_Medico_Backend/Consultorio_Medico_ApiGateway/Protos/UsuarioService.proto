@@ -82,4 +82,3 @@ message Tipo_Empleado{
 
 message RespuestaVacia {
 }
-

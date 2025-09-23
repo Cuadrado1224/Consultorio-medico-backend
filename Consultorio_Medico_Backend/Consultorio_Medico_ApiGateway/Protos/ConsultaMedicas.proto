@@ -1,0 +1,99 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Consultorio_Medico_Consultas"; // Ajusta el namespace para que sea más específico
+
+// Importamos los protos necesarios
+import "Protos/Paciente.proto"; // Para el mensaje PacienteModel
+import "Protos/AdministracionService.proto"; // Para el mensaje Empleado y sus relaciones
+
+// Mensaje para una consulta médica
+message Consulta {
+    int32 id_consulta_medica = 1;
+    string fecha = 2;
+    string hora = 3;
+    string motivo = 4;
+    string diagnostico = 5;
+    string tratamiento = 6;
+    
+    Admin.Centro_Medico centroMedico=7;
+    // Relaciones con Empleado (médico) y Paciente
+    Admin.Empleado empleado = 8; // Viene del microservicio de administración
+    paciente.PacienteModel paciente = 9; // Viene del microservicio de consultas
+}
+// Solicitud para buscar consulta por cédula del paciente
+message ConsultaCedulaRequest {
+    string cedula = 1;
+}
+
+
+// Solicitud para crear una consulta
+message CreateConsultaRequest {
+    string fecha = 1;
+    string hora = 2;
+    string motivo = 3;
+    string diagnostico = 4;
+    string tratamiento = 5;
+    int32 id_medico = 6; // ID del médico (Empleado)
+    string cedula = 7;
+    int32 id_centro_medico=8;
+}
+
+message UpdateConsultaRequest {
+    int32 id_consulta_medica = 1;
+    string fecha = 2;
+    string hora = 3;
+    string motivo = 4;
+    string diagnostico = 5;
+    string tratamiento = 6;
+    int32 id_medico = 7; // ID del médico (Empleado)
+    string cedula = 8;
+    int32 id_centro_medico=9;
+}
+
+// Solicitud para eliminar una consulta
+message DeleteConsultaRequest {
+    int32 id_consulta_medica = 1;
+}
+
+// Solicitud para buscar consultas por fecha
+message ConsultaFechaRequest {
+    string fecha_desde = 1;
+    string fecha_hasta = 2;
+}
+
+// Respuesta vacía para operaciones como eliminar
+message EmptyResponse {
+}
+
+// Respuesta para una lista de consultas (puedes usarlo para reportes)
+message ConsultaList {
+    repeated Consulta consultas = 1;
+}
+
+
+// Definimos el servicio
+service ConsultasService {
+    // Obtener una consulta por cédula del paciente ya esta 
+    rpc GetConsultaCedula(ConsultaCedulaRequest) returns (Consulta);
+
+    // Crear una nueva consulta ya esta
+    rpc CreateConsulta(CreateConsultaRequest) returns (Consulta);
+
+    //Editar una Consulta
+    rpc ActualizarConsulta(UpdateConsultaRequest) returns (Consulta);
+
+    // Eliminar una consulta por ID  ya esta
+    rpc DeleteConsulta(DeleteConsultaRequest) returns (EmptyResponse);
+
+    // Obtener todas las consultas ya esta
+    rpc GetAllConsultas(EmptyResponse) returns (ConsultaList);
+
+    // Obtener consultas por fecha 
+    rpc GetConsultasByFecha(ConsultaFechaRequest) returns (ConsultaList);
+
+    // Opcional: para reportes de consultas médicas
+    rpc GetConsultasReporte(ConsultaCedulaRequest) returns (ConsultaList);
+
+    // Obtener Consultas por Centro Medico
+    rpc GetConsultasCentroMedico(Admin.Centro_MedicoGet) returns (ConsultaList);
+}

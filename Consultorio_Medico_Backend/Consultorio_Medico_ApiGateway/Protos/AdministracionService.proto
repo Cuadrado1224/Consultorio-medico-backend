@@ -1,0 +1,138 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Consultorio_Medico_Administracion";
+
+package Admin;
+
+service AdministracionService{
+
+    //especialidades
+    rpc GetAllEspecialidades(RespuestaVacia) returns (EspecialidadLista);
+    rpc GetEspecialidades(EspecialidadGet) returns (Especialidad);
+    rpc PostEspecialidad (EspecialidadPost) returns (Especialidad);
+    rpc PutEspecialidad (Especialidad) returns (Especialidad);
+    rpc DeleteEspecialidad(EspecialidadGet) returns (RespuestaVacia);
+    //tipo empleado
+    rpc GetAllTipo_Empleado(RespuestaVacia) returns (Tipo_EmpleadoLista);
+    rpc GetTipo_Empleado(Tipo_EmpleadoGet) returns (Tipo_Empleado);
+    rpc PostTipo_Empleado (Tipo_EmpleadoPost) returns (Tipo_Empleado);
+    rpc PutTipo_Empleado (Tipo_Empleado) returns (Tipo_Empleado);
+    rpc DeleteTipo_Empleado(Tipo_EmpleadoGet) returns (RespuestaVacia);
+    //centros medicos
+    rpc GetAllCentro_Medico(RespuestaVacia) returns (Centro_MedicoLista);
+    rpc GetCentro_Medico(Centro_MedicoGet) returns (Centro_Medico);
+    rpc PostCentro_Medico (Centro_MedicoPost) returns (Centro_Medico);
+    rpc PutCentro_Medico (Centro_Medico) returns (Centro_Medico);
+    rpc DeleteCentro_Medico(Centro_MedicoGet) returns (RespuestaVacia);
+    //empleados
+	rpc GetEmpleado (EmpleadoGet) returns (Empleado);
+    rpc GetAllEmpleado(RespuestaVacia) returns (EmpleadoLista);
+    rpc PostEmpleado (EmpleadoPost) returns (Empleado);
+    rpc PutEmpleado (EmpleadoPut) returns (Empleado);
+    rpc DeleteEmpleado(EmpleadoGet) returns (RespuestaVacia);
+    rpc GetAllEmpleadoByEspecialidad(EspecialidadGet) returns (EmpleadoLista);
+    rpc GetAllEmpleadoByCentroMedico(Centro_MedicoGet) returns (EmpleadoLista);
+}
+
+//entidades empleado
+
+message Empleado{
+	    int32 Id=1;
+        int32 centro_medicoID=2;
+        int32 tipo_empleadoID=3;
+        string nombre=4;
+        string cedula=5;
+        int32 especialidadID=6;
+        string telefono=7;
+        string email=8;
+        double salario=9;
+
+        Centro_Medico Centro_Medico=10;
+        Tipo_Empleado Tipo_Empleado=11;
+        Especialidad Especialidad=12;
+}
+message EmpleadoGet{
+    int32 Id=1;
+}
+message EmpleadoPost{
+
+        int32 centro_medicoID=1;
+        int32 tipo_empleadoID=2;
+        string nombre=3;
+        string cedula=4;
+        int32 especialidadID=5;
+        string telefono=6;
+        string email=7;
+        double salario=8;
+}
+message EmpleadoPut{
+        int32 Id=1;
+        int32 centro_medicoID=2;
+        int32 tipo_empleadoID=3;
+        string nombre=4;
+        string cedula=5;
+        int32 especialidadID=6;
+        string telefono=7;
+        string email=8;
+        double salario=9;
+}
+message EmpleadoLista{
+    repeated Empleado empleados=1;
+}
+
+//entidades especialidades
+message Especialidad{
+         int32 Id=1;
+        string especialidad=2;
+}
+message EspecialidadPost{
+    string especialidad=1;
+}
+message EspecialidadGet{
+    int32 id=1;
+}
+message EspecialidadLista{
+    repeated Especialidad especialidades=1;
+}
+
+
+//entidades centro medico
+
+message Centro_Medico{
+        int32 Id=1;
+        string nombre=2; 
+        string ciudad=3;
+        string direccion=4;
+}
+message Centro_MedicoPost{
+        string nombre=1; 
+        string ciudad=2;
+        string direccion=3;
+}
+message Centro_MedicoGet{
+        int32 Id=1;
+}
+message Centro_MedicoLista{
+        repeated Centro_Medico centros =1;
+}
+
+//entidades tipo empleado
+
+message Tipo_Empleado{
+    int32 Id=1;
+    string tipo=2;
+}
+
+message Tipo_EmpleadoPost{
+    string tipo=1;
+}
+message Tipo_EmpleadoGet{
+    int32 Id=1;
+}
+message Tipo_EmpleadoLista{
+    repeated Tipo_Empleado tipos=1;
+}
+
+
+//RespuestaVacia
+message RespuestaVacia{}

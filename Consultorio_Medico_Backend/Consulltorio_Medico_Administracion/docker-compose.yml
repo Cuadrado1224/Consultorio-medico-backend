@@ -1,0 +1,16 @@
+version: '3.8'
+## Docker para subir un servidor de base de datos mariadb de prueba para desarrollar el microservicio
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb-dev
+    environment:
+      MARIADB_ROOT_PASSWORD: 200232
+      MARIADB_DATABASE: hospital
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

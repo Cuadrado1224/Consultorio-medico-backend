@@ -3,6 +3,9 @@ using Grpc.Net.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Consulltorio_Medico_Autenticacion.Protos;
+using Consulltorio_Medico_Administracion.Protos;
+
+
 
 
 

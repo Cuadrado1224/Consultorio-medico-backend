@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Consultorio_Medico_Administracion";
+option csharp_namespace = "Consulltorio_Medico_Administracion.Administracion";
 
 package Admin;
 

@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6be71054-f8bb-4eef-89a7-03518b8b4d03</UserSecretsId>
+	  <RootNamespace>Microservicio_Administracion</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -30,6 +31,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+	  <Protobuf Include="Protos\UsuarioService.proto" GrpcServices="Server" />
+	  <Protobuf Include="Protos\AdministracionService.proto" GrpcServices="Server" />
+
   </ItemGroup>
 
 </Project>

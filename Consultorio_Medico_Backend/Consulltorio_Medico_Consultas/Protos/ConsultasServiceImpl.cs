@@ -2,15 +2,12 @@
 using Consulltorio_Medico_Consultas.Models;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
-using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.Globalization;
-using Microsoft.AspNetCore.Authorization;
 using ConsultasMedicas;
-using Consultas_Pacientes.Protos;
+
 using Servicio_Administracion.Administracion;
+using Consulltorio_Medico_Consultas.Protos;
 
 namespace Consulltorio_Medico_Consultas.protos
 {

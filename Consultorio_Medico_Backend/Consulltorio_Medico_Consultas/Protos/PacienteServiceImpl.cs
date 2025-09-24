@@ -1,6 +1,6 @@
 ﻿using Consulltorio_Medico_Consultas.Data;
 using Consulltorio_Medico_Consultas.Models;
-using Consultas_Pacientes.Protos;
+using Consulltorio_Medico_Consultas.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
@@ -131,7 +131,7 @@ namespace Consulltorio_Medico_Consultas.protos
             return new EliminarPacienteResponse { Success = true };
         }
         [Authorize]
-        public override async Task<GetPacienteListaResponse> GetAllPaciente(Consultas_Pacientes.Protos.EmptyResponse request, ServerCallContext context)
+        public override async Task<GetPacienteListaResponse> GetAllPaciente(Consulltorio_Medico_Consultas.Protos.EmptyResponse request, ServerCallContext context)
         {
             var pacientes = await _context.Paciente.ToListAsync();
             var pacientesLista = new List<PacienteModel>();

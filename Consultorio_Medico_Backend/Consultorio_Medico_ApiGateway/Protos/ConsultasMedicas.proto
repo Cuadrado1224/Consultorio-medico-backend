@@ -1,9 +1,10 @@
 ﻿syntax = "proto3";
 
 option csharp_namespace = "Consulltorio_Medico_Consultas"; // Ajusta el namespace para que sea más específico
+package consultas;
 
 // Importamos los protos necesarios
-import "Protos/Paciente.proto"; // Para el mensaje PacienteModel
+import "Protos/paciente.proto"; // Para el mensaje PacienteModel
 import "Protos/AdministracionService.proto"; // Para el mensaje Empleado y sus relaciones
 
 // Mensaje para una consulta médica
@@ -18,6 +19,7 @@ message Consulta {
     Admin.Centro_Medico centroMedico=7;
     // Relaciones con Empleado (médico) y Paciente
     Admin.Empleado empleado = 8; // Viene del microservicio de administración
+
     paciente.PacienteModel paciente = 9; // Viene del microservicio de consultas
 }
 // Solicitud para buscar consulta por cédula del paciente

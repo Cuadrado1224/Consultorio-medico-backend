@@ -1,8 +1,9 @@
 ﻿
-using Consultorio_Medico_Administracion.Models;
+
+using Consulltorio_Medico_Administracion.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Consultorio_Medico_Administracion.Data
+namespace Consulltorio_Medico_Administracion.Data
 {
     public class AppDbContext : DbContext
     {

@@ -77,7 +77,7 @@ namespace Consultorio_Medico_ApiGateway.Controllers
                 return BadRequest("Sin Token");
             }
         }
-
+        
         [HttpPut("Usuarios/{id}")]
         public async Task<ActionResult<Usuario>> PutUsuario(int id, UsuarioActualizar usuario)
         {

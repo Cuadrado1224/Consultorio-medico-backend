@@ -12,7 +12,7 @@ using Consulltorio_Medico_Autenticacion.Auth;
 
 namespace Consulltorio_Medico_Autenticacion.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {

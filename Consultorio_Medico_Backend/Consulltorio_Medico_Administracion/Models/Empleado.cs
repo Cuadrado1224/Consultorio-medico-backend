@@ -1,4 +1,4 @@
-﻿namespace Consultorio_Medico_Administracion.Models
+﻿namespace Consulltorio_Medico_Administracion.Models
 {
     public class Empleado
     {

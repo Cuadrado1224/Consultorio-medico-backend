@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Grpc.Core;
-using Consultorio_Medico_Administracion.Data;
-using Consultorio_Medico_Administracion.Administracion;
-using Consultorio_Medico_Administracion.Models;
+using Consulltorio_Medico_Administracion.Data;
+
 using Microsoft.AspNetCore.Authorization;
+using Consulltorio_Medico_Administracion.Administracion;
 
 namespace Consultorio_Medico_Administracion.Protos
 {
@@ -17,7 +17,7 @@ namespace Consultorio_Medico_Administracion.Protos
             _context = context;
         }
         [Authorize]
-        public override async Task<EmpleadoLista> GetAllEmpleado(Administracion.RespuestaVacia request, ServerCallContext context)
+        public override async Task<EmpleadoLista> GetAllEmpleado(Consulltorio_Medico_Administracion.Administracion.RespuestaVacia request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -29,11 +29,11 @@ namespace Consultorio_Medico_Administracion.Protos
                 .Include(e => e.Tipo_Empleado)
                 .ToListAsync();
 
-            var empleadosLista =new List<Administracion.Empleado>();
+            var empleadosLista =new List<Consulltorio_Medico_Administracion.Administracion.Empleado>();
 
             foreach (var u in e)
             {
-                var empleadoFila = new Administracion.Empleado
+                var empleadoFila = new Consulltorio_Medico_Administracion.Administracion.Empleado
                 {
                     Id = u.Id,
                     Cedula = u.cedula,
@@ -44,19 +44,19 @@ namespace Consultorio_Medico_Administracion.Protos
                     Salario = u.salario,
                     Telefono = u.telefono,
                     TipoEmpleadoID = u.especialidadID,
-                    CentroMedico = new Administracion.Centro_Medico
+                    CentroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                     {
                         Id = u.Centro_Medico.Id,
                         Ciudad = u.Centro_Medico.ciudad,
                         Direccion = u.Centro_Medico.direccion,
                         Nombre = u.Centro_Medico.nombre
                     },
-                    Especialidad = new Administracion.Especialidad
+                    Especialidad = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                     {
                         Id = u.Especialidad.Id,
                         Especialidad_ = u.Especialidad.especialidad
                     },
-                    TipoEmpleado = new Administracion.Tipo_Empleado
+                    TipoEmpleado = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                     {
                         Id = u.Tipo_Empleado.Id,
                         Tipo = u.Tipo_Empleado.tipo
@@ -71,7 +71,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize]
-        public override async Task<Administracion.Empleado> GetEmpleado(EmpleadoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Empleado> GetEmpleado(EmpleadoGet request, ServerCallContext context)
         {
 
             if (request == null)
@@ -90,7 +90,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Empleado
             {
                 Email=e.email,
                 Id=e.Id,
@@ -101,18 +101,18 @@ namespace Consultorio_Medico_Administracion.Protos
                 TipoEmpleadoID=e.tipo_empleadoID,
                 Salario=e.salario,
                 Telefono=e.telefono,
-                Especialidad=new Administracion.Especialidad
+                Especialidad=new Consulltorio_Medico_Administracion.Administracion.Especialidad
                 {
                     Especialidad_=e.Especialidad.especialidad,
                     Id=e.Especialidad.Id
 
                 },
-                TipoEmpleado=new Administracion.Tipo_Empleado
+                TipoEmpleado=new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                 {
                     Id=e.Tipo_Empleado.Id,
                     Tipo=e.Tipo_Empleado.tipo
                 },
-                CentroMedico=new Administracion.Centro_Medico
+                CentroMedico=new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                 {
                     Id=e.Centro_Medico.Id,
                     Ciudad=e.Centro_Medico.ciudad,
@@ -123,7 +123,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.RespuestaVacia> DeleteEmpleado(EmpleadoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.RespuestaVacia> DeleteEmpleado(EmpleadoGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -138,10 +138,10 @@ namespace Consultorio_Medico_Administracion.Protos
             _context.Empleados.Remove(empleado);
             await _context.SaveChangesAsync();
 
-            return new Administracion.RespuestaVacia { };
+            return new Consulltorio_Medico_Administracion.Administracion.RespuestaVacia { };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Empleado> PostEmpleado(EmpleadoPost request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Empleado> PostEmpleado(EmpleadoPost request, ServerCallContext context)
         {
 
             if (request == null)
@@ -162,7 +162,7 @@ namespace Consultorio_Medico_Administracion.Protos
             if (!tipoEmpleadoExiste)
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Tipo de empleado no válido."));
 
-            var empleadoGuardar = new Models.Empleado
+            var empleadoGuardar = new Consulltorio_Medico_Administracion.Models.Empleado
             {
                 cedula = request.Cedula,
                 email = request.Email,
@@ -193,7 +193,7 @@ namespace Consultorio_Medico_Administracion.Protos
             if (empleadoConDatos == null)
                 throw new RpcException(new Status(StatusCode.Internal, "Error al recuperar el empleado recién creado."));
 
-            return new Administracion.Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Empleado
             {
                 Id = empleadoConDatos.Id,
                 Cedula = empleadoConDatos.cedula,
@@ -204,19 +204,19 @@ namespace Consultorio_Medico_Administracion.Protos
                 Salario = empleadoConDatos.salario,
                 Telefono = empleadoConDatos.telefono,
                 TipoEmpleadoID = empleadoConDatos.tipo_empleadoID,
-                CentroMedico = new Administracion.Centro_Medico
+                CentroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                 {
                     Id = empleadoConDatos.Centro_Medico.Id,
                     Ciudad = empleadoConDatos.Centro_Medico.ciudad,
                     Direccion = empleadoConDatos.Centro_Medico.direccion,
                     Nombre = empleadoConDatos.Centro_Medico.nombre
                 },
-                Especialidad = new Administracion.Especialidad
+                Especialidad = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                 {
                     Id = empleadoConDatos.Especialidad.Id,
                     Especialidad_ = empleadoConDatos.Especialidad.especialidad
                 },
-                TipoEmpleado = new Administracion.Tipo_Empleado
+                TipoEmpleado = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                 {
                     Id = empleadoConDatos.Tipo_Empleado.Id,
                     Tipo = empleadoConDatos.Tipo_Empleado.tipo
@@ -224,7 +224,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Empleado> PutEmpleado(EmpleadoPut request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Empleado> PutEmpleado(EmpleadoPut request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -248,7 +248,7 @@ namespace Consultorio_Medico_Administracion.Protos
             if (!tipoEmpleadoExiste)
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Tipo de empleado no válido."));
 
-            var empleadoGuardar = new Models.Empleado
+            var empleadoGuardar = new Consulltorio_Medico_Administracion.Models.Empleado
             {
                 Id=request.Id,
                 cedula = request.Cedula,
@@ -280,7 +280,7 @@ namespace Consultorio_Medico_Administracion.Protos
             if (empleadoConDatos == null)
                 throw new RpcException(new Status(StatusCode.Internal, "Error al recuperar el empleado recién creado."));
 
-            return new Administracion.Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Empleado
             {
                 Id = empleadoConDatos.Id,
                 Cedula = empleadoConDatos.cedula,
@@ -291,19 +291,19 @@ namespace Consultorio_Medico_Administracion.Protos
                 Salario = empleadoConDatos.salario,
                 Telefono = empleadoConDatos.telefono,
                 TipoEmpleadoID = empleadoConDatos.tipo_empleadoID,
-                CentroMedico = new Administracion.Centro_Medico
+                CentroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                 {
                     Id = empleadoConDatos.Centro_Medico.Id,
                     Ciudad = empleadoConDatos.Centro_Medico.ciudad,
                     Direccion = empleadoConDatos.Centro_Medico.direccion,
                     Nombre = empleadoConDatos.Centro_Medico.nombre
                 },
-                Especialidad = new Administracion.Especialidad
+                Especialidad = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                 {
                     Id = empleadoConDatos.Especialidad.Id,
                     Especialidad_ = empleadoConDatos.Especialidad.especialidad
                 },
-                TipoEmpleado = new Administracion.Tipo_Empleado
+                TipoEmpleado = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                 {
                     Id = empleadoConDatos.Tipo_Empleado.Id,
                     Tipo = empleadoConDatos.Tipo_Empleado.tipo
@@ -324,11 +324,11 @@ namespace Consultorio_Medico_Administracion.Protos
                 .Where(e=>e.centro_medicoID.Equals(request.Id))
                 .ToListAsync();
 
-            var empleadosLista = new List<Administracion.Empleado>();
+            var empleadosLista = new List<Consulltorio_Medico_Administracion.Administracion.Empleado>();
 
             foreach (var u in e)
             {
-                var empleadoFila = new Administracion.Empleado
+                var empleadoFila = new Consulltorio_Medico_Administracion.Administracion.Empleado
                 {
                     Id = u.Id,
                     Cedula = u.cedula,
@@ -339,19 +339,19 @@ namespace Consultorio_Medico_Administracion.Protos
                     Salario = u.salario,
                     Telefono = u.telefono,
                     TipoEmpleadoID = u.especialidadID,
-                    CentroMedico = new Administracion.Centro_Medico
+                    CentroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                     {
                         Id = u.Centro_Medico.Id,
                         Ciudad = u.Centro_Medico.ciudad,
                         Direccion = u.Centro_Medico.direccion,
                         Nombre = u.Centro_Medico.nombre
                     },
-                    Especialidad = new Administracion.Especialidad
+                    Especialidad = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                     {
                         Id = u.Especialidad.Id,
                         Especialidad_ = u.Especialidad.especialidad
                     },
-                    TipoEmpleado = new Administracion.Tipo_Empleado
+                    TipoEmpleado = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                     {
                         Id = u.Tipo_Empleado.Id,
                         Tipo = u.Tipo_Empleado.tipo
@@ -378,11 +378,11 @@ namespace Consultorio_Medico_Administracion.Protos
                 .Where(e => e.especialidadID.Equals(request.Id))
                 .ToListAsync();
 
-            var empleadosLista = new List<Administracion.Empleado>();
+            var empleadosLista = new List<Consulltorio_Medico_Administracion.Administracion.Empleado>();
 
             foreach (var u in e)
             {
-                var empleadoFila = new Administracion.Empleado
+                var empleadoFila = new Consulltorio_Medico_Administracion.Administracion.Empleado
                 {
                     Id = u.Id,
                     Cedula = u.cedula,
@@ -393,19 +393,19 @@ namespace Consultorio_Medico_Administracion.Protos
                     Salario = u.salario,
                     Telefono = u.telefono,
                     TipoEmpleadoID = u.especialidadID,
-                    CentroMedico = new Administracion.Centro_Medico
+                    CentroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                     {
                         Id = u.Centro_Medico.Id,
                         Ciudad = u.Centro_Medico.ciudad,
                         Direccion = u.Centro_Medico.direccion,
                         Nombre = u.Centro_Medico.nombre
                     },
-                    Especialidad = new Administracion.Especialidad
+                    Especialidad = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                     {
                         Id = u.Especialidad.Id,
                         Especialidad_ = u.Especialidad.especialidad
                     },
-                    TipoEmpleado = new Administracion.Tipo_Empleado
+                    TipoEmpleado = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                     {
                         Id = u.Tipo_Empleado.Id,
                         Tipo = u.Tipo_Empleado.tipo
@@ -421,15 +421,15 @@ namespace Consultorio_Medico_Administracion.Protos
         }
         //////////////
         [Authorize]
-        public override async Task<Centro_MedicoLista> GetAllCentro_Medico(Administracion.RespuestaVacia request, ServerCallContext context)
+        public override async Task<Centro_MedicoLista> GetAllCentro_Medico(Consulltorio_Medico_Administracion.Administracion.RespuestaVacia request, ServerCallContext context)
         {
             var centrosMedicos = await _context.Centros_Medicos.ToListAsync();
             
-            var CentrosLista=new List<Administracion.Centro_Medico>();
+            var CentrosLista=new List<Consulltorio_Medico_Administracion.Administracion.Centro_Medico>();
 
             foreach (var centro in centrosMedicos)
             {
-                var centroMedico = new Administracion.Centro_Medico
+                var centroMedico = new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
                 {
                     Id = centro.Id,
                     Ciudad = centro.ciudad,
@@ -445,7 +445,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize]
-        public override async Task<Administracion.Centro_Medico> GetCentro_Medico(Centro_MedicoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Centro_Medico> GetCentro_Medico(Centro_MedicoGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -459,7 +459,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Centro_Medico
+            return new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
             {
              Id=centrosMedico.Id,
              Ciudad=centrosMedico.ciudad,
@@ -468,7 +468,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Centro_Medico> PostCentro_Medico(Centro_MedicoPost request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Centro_Medico> PostCentro_Medico(Centro_MedicoPost request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -476,7 +476,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            var CentroGuardar = new Models.Centro_Medico
+            var CentroGuardar = new Consulltorio_Medico_Administracion.Models.Centro_Medico
             {
                 ciudad=request.Ciudad,
                 direccion=request.Direccion,
@@ -495,7 +495,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Centro_Medico
+            return new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
             {
                 Id = CentroGuardar.Id,
                 Ciudad = CentroGuardar.ciudad,
@@ -505,7 +505,7 @@ namespace Consultorio_Medico_Administracion.Protos
             
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Centro_Medico> PutCentro_Medico(Administracion.Centro_Medico request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Centro_Medico> PutCentro_Medico(Consulltorio_Medico_Administracion.Administracion.Centro_Medico request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -517,7 +517,7 @@ namespace Consultorio_Medico_Administracion.Protos
                 throw new RpcException(new Status(StatusCode.NotFound, "El centro medico no existe"));
             }
 
-            var CentroGuardar = new Models.Centro_Medico
+            var CentroGuardar = new Consulltorio_Medico_Administracion.Models.Centro_Medico
             {
                 ciudad = request.Ciudad,
                 direccion = request.Direccion,
@@ -536,7 +536,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Centro_Medico
+            return new Consulltorio_Medico_Administracion.Administracion.Centro_Medico
             {
                 Id = CentroGuardar.Id,
                 Ciudad = CentroGuardar.ciudad,
@@ -546,7 +546,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.RespuestaVacia> DeleteCentro_Medico(Centro_MedicoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.RespuestaVacia> DeleteCentro_Medico(Centro_MedicoGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -561,19 +561,19 @@ namespace Consultorio_Medico_Administracion.Protos
             _context.Centros_Medicos.Remove(centro);
             await _context.SaveChangesAsync();
 
-            return new Administracion.RespuestaVacia { };
+            return new Consulltorio_Medico_Administracion.Administracion.RespuestaVacia { };
         }
         //////////////////
         [Authorize]
-        public override async Task<Tipo_EmpleadoLista> GetAllTipo_Empleado(Administracion.RespuestaVacia request, ServerCallContext context)
+        public override async Task<Tipo_EmpleadoLista> GetAllTipo_Empleado(Consulltorio_Medico_Administracion.Administracion.RespuestaVacia request, ServerCallContext context)
         {
             var tipoBuscar = await _context.Tipos_Empleados.ToListAsync();
 
-            var TiposLista = new List<Administracion.Tipo_Empleado>();
+            var TiposLista = new List<Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado>();
 
             foreach (var tipo in tipoBuscar)
             {
-                var tipoFila = new Administracion.Tipo_Empleado
+                var tipoFila = new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
                 {
                     Id = tipo.Id,
                     Tipo= tipo.tipo
@@ -588,7 +588,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize]
-        public override async Task<Administracion.Tipo_Empleado> GetTipo_Empleado(Tipo_EmpleadoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado> GetTipo_Empleado(Tipo_EmpleadoGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -602,14 +602,14 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Tipo_Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
             {
                 Id= tipoBuscar.Id,
                 Tipo=tipoBuscar.tipo
             };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Tipo_Empleado> PostTipo_Empleado(Tipo_EmpleadoPost request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado> PostTipo_Empleado(Tipo_EmpleadoPost request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -617,7 +617,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            var TipoGuardar = new Models.Tipo_Empleado
+            var TipoGuardar = new Consulltorio_Medico_Administracion.Models.Tipo_Empleado
             {
                 tipo=request.Tipo
             };
@@ -633,7 +633,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Tipo_Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
             {
                 Id=TipoGuardar.Id,
                 Tipo = TipoGuardar.tipo
@@ -641,7 +641,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Tipo_Empleado> PutTipo_Empleado(Administracion.Tipo_Empleado request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado> PutTipo_Empleado(Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -653,7 +653,7 @@ namespace Consultorio_Medico_Administracion.Protos
                 throw new RpcException(new Status(StatusCode.NotFound, "El tipo de empleado no existe"));
             }
 
-            var tipoGuardar = new Models.Tipo_Empleado
+            var tipoGuardar = new Consulltorio_Medico_Administracion.Models.Tipo_Empleado
             {
                 Id=request.Id,
                 tipo=request.Tipo
@@ -671,7 +671,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Tipo_Empleado
+            return new Consulltorio_Medico_Administracion.Administracion.Tipo_Empleado
             {
                 Id = tipoGuardar.Id,
                 Tipo = tipoGuardar.tipo
@@ -679,7 +679,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.RespuestaVacia> DeleteTipo_Empleado(Tipo_EmpleadoGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.RespuestaVacia> DeleteTipo_Empleado(Tipo_EmpleadoGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -694,20 +694,20 @@ namespace Consultorio_Medico_Administracion.Protos
             _context.Tipos_Empleados.Remove(tipo);
             await _context.SaveChangesAsync();
 
-            return new Administracion.RespuestaVacia { };
+            return new Consulltorio_Medico_Administracion.Administracion.RespuestaVacia { };
         }
 
         //////////////////
         [Authorize]
-        public override async Task<EspecialidadLista> GetAllEspecialidades(Administracion.RespuestaVacia request, ServerCallContext context)
+        public override async Task<EspecialidadLista> GetAllEspecialidades(Consulltorio_Medico_Administracion.Administracion.RespuestaVacia request, ServerCallContext context)
         {
             var especialidadBuscar = await _context.Especialidades.ToListAsync();
 
-            var especialidadLista = new List<Administracion.Especialidad>();
+            var especialidadLista = new List<Consulltorio_Medico_Administracion.Administracion.Especialidad>();
 
             foreach (var especialidad in especialidadBuscar)
             {
-                var tipoFila = new Administracion.Especialidad
+                var tipoFila = new Consulltorio_Medico_Administracion.Administracion.Especialidad
                 {
                     Id = especialidad.Id,
                     Especialidad_=especialidad.especialidad
@@ -722,7 +722,7 @@ namespace Consultorio_Medico_Administracion.Protos
             };
         }
         [Authorize]
-        public override async Task<Administracion.Especialidad> GetEspecialidades(EspecialidadGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Especialidad> GetEspecialidades(EspecialidadGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -736,14 +736,14 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Especialidad
+            return new Consulltorio_Medico_Administracion.Administracion.Especialidad
             {
                 Id = especialidadBuscar.Id,
                 Especialidad_=especialidadBuscar.especialidad
             };
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Especialidad> PostEspecialidad(EspecialidadPost request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Especialidad> PostEspecialidad(EspecialidadPost request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -751,7 +751,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            var especialidadGuardar = new Models.Especialidad
+            var especialidadGuardar = new Consulltorio_Medico_Administracion.Models.Especialidad
             {
                 especialidad=request.Especialidad
             };
@@ -767,7 +767,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Especialidad
+            return new Consulltorio_Medico_Administracion.Administracion.Especialidad
             {
                 Id = especialidadGuardar.Id,
                 Especialidad_=especialidadGuardar.especialidad
@@ -775,7 +775,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.Especialidad> PutEspecialidad(Administracion.Especialidad request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.Especialidad> PutEspecialidad(Consulltorio_Medico_Administracion.Administracion.Especialidad request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -787,7 +787,7 @@ namespace Consultorio_Medico_Administracion.Protos
                 throw new RpcException(new Status(StatusCode.NotFound, "la Especialidad no existe"));
             }
 
-            var especialidadGuardar = new Models.Especialidad
+            var especialidadGuardar = new Consulltorio_Medico_Administracion.Models.Especialidad
             {
                 Id = request.Id,
                 especialidad=request.Especialidad_
@@ -805,7 +805,7 @@ namespace Consultorio_Medico_Administracion.Protos
             }
 
 
-            return new Administracion.Especialidad
+            return new Consulltorio_Medico_Administracion.Administracion.Especialidad
             {
                 Id = especialidadGuardar.Id,
                 Especialidad_=especialidadGuardar.especialidad
@@ -813,7 +813,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
         }
         [Authorize(Policy = "TipoEmpleadoPolitica")]
-        public override async Task<Administracion.RespuestaVacia> DeleteEspecialidad(EspecialidadGet request, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Administracion.RespuestaVacia> DeleteEspecialidad(EspecialidadGet request, ServerCallContext context)
         {
             if (request == null)
             {
@@ -828,7 +828,7 @@ namespace Consultorio_Medico_Administracion.Protos
             _context.Especialidades.Remove(especialidad);
             await _context.SaveChangesAsync();
 
-            return new Administracion.RespuestaVacia { };
+            return new Consulltorio_Medico_Administracion.Administracion.RespuestaVacia { };
         }
 
 

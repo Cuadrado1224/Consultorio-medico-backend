@@ -1,4 +1,5 @@
-using Consultorio_Medico_Administracion.Data;
+using Consulltorio_Medico_Administracion.Data;
+using Consulltorio_Medico_Administracion.Protos;
 using Consultorio_Medico_Administracion.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -124,29 +125,29 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate(); // <-- esto aplica las migraciones
     if (!db.Especialidades.Any())
     {
-        db.Especialidades.Add(new Consultorio_Medico_Administracion.Models.Especialidad { Id = 1, especialidad = "Sin Especialidad" });
+        db.Especialidades.Add(new Consulltorio_Medico_Administracion.Models.Especialidad { Id = 1, especialidad = "Sin Especialidad" });
         db.SaveChanges();
     }
     if (!db.Tipos_Empleados.Any())
     {
-        db.Tipos_Empleados.Add(new Consultorio_Medico_Administracion.Models.Tipo_Empleado { Id = 1, tipo = "Administrador" });
+        db.Tipos_Empleados.Add(new Consulltorio_Medico_Administracion.Models.Tipo_Empleado { Id = 1, tipo = "Administrador" });
         db.SaveChanges();
     }
 
     if (!db.Centros_Medicos.Any())
     {
-        db.Centros_Medicos.Add(new Consultorio_Medico_Administracion.Models.Centro_Medico { Id = 1, nombre = "Central", ciudad = "Quito", direccion = "direccion" });
+        db.Centros_Medicos.Add(new Consulltorio_Medico_Administracion.Models.Centro_Medico { Id = 1, nombre = "Central", ciudad = "Quito", direccion = "direccion" });
         db.SaveChanges();
     }
 
     if (!db.Empleados.Any())
     {
-        db.Empleados.Add(new Consultorio_Medico_Administracion.Models.Empleado { Id = 1, nombre = "admin", cedula = "01020304", especialidadID = 1, email = "admin@admin.com", tipo_empleadoID = 1, telefono = "0123456789", centro_medicoID = 1 });
+        db.Empleados.Add(new Consulltorio_Medico_Administracion.Models.Empleado { Id = 1, nombre = "admin", cedula = "01020304", especialidadID = 1, email = "admin@admin.com", tipo_empleadoID = 1, telefono = "0123456789", centro_medicoID = 1 });
         db.SaveChanges();
     }
     if (!db.Usuarios.Any())
     {
-        db.Usuarios.Add(new Consultorio_Medico_Administracion.Models.Usuario { Id = 1, nombre_usuario = "root", contraseña = "1234", empleadoId = 1 });
+        db.Usuarios.Add(new Consulltorio_Medico_Administracion.Models.Usuario { Id = 1, nombre_usuario = "root", contraseña = "1234", empleadoId = 1 });
         db.SaveChanges();
     }
 }

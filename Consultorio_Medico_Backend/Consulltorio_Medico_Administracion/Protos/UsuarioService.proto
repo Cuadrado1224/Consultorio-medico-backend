@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Consultorio_Medico_Administracion.Protos";
+option csharp_namespace = "Consulltorio_Medico_Administracion.Protos";
 
 package Auth;
 

@@ -1,7 +1,7 @@
 ﻿using Consulltorio_Medico_Administracion.Administracion;
 using Grpc.Core;
 using Grpc.Net.Client;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Consultorio_Medico_ApiGateway.Controllers

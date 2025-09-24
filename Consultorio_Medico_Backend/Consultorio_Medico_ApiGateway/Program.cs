@@ -19,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.CustomSchemaIds(type => $"{type.FullName}_{type.Assembly.GetName().Name}");
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme",
@@ -43,7 +44,7 @@ builder.Services.AddSwaggerGen(c =>
             []
         }
     });
-    c.CustomSchemaIds(type => type.FullName);
+   
 }
 );
 

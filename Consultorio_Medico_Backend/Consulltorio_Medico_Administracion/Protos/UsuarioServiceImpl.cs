@@ -1,14 +1,15 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Grpc.Core;
-using Consultorio_Medico_Administracion.Data;
-using Consultorio_Medico_Administracion.Protos;
-using Consultorio_Medico_Administracion.Models;
+using Consulltorio_Medico_Administracion.Data;
+using Consulltorio_Medico_Administracion.Protos;
+using Consulltorio_Medico_Administracion.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Consultorio_Medico_Administracion.Administracion;
 
-namespace Consultorio_Medico_Administracion.Protos
+
+
+namespace Consulltorio_Medico_Administracion.Protos
 {
     public class UsuarioServiceImpl : UsuarioService.UsuarioServiceBase
     {
@@ -19,7 +20,7 @@ namespace Consultorio_Medico_Administracion.Protos
             _context = context;
         }
 
-        public override async Task<UsuarioLoginRespuesta> ValidarUsuario(UsuarioLogin usuario, ServerCallContext context)
+        public override async Task<Consulltorio_Medico_Administracion.Protos.UsuarioLoginRespuesta> ValidarUsuario(Consulltorio_Medico_Administracion.Protos.UsuarioLogin usuario, ServerCallContext context)
         {
             if (usuario == null)
             {
@@ -35,7 +36,7 @@ namespace Consultorio_Medico_Administracion.Protos
 
             if (usuarioBuscar == null)
             {
-                return new UsuarioLoginRespuesta
+                return new Consulltorio_Medico_Administracion.Protos.UsuarioLoginRespuesta
                 {
                     EsValido = false
                 };

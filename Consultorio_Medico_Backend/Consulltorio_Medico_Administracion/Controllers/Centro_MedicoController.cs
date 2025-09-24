@@ -1,6 +1,7 @@
 ﻿
-using Consultorio_Medico_Administracion.Data;
-using Consultorio_Medico_Administracion.Models;
+using Consulltorio_Medico_Administracion.Data;
+using Consulltorio_Medico_Administracion.Models;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

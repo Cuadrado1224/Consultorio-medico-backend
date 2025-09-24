@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Consultorio_Medico_Administracion.Models
+namespace Consulltorio_Medico_Administracion.Models
 {
     public class UsuarioLogin
     {

@@ -1,66 +1,41 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+﻿using Consulltorio_Medico_Autenticacion.Protos;
 
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
+// Add services to the container.
+
+builder.Services.AddGrpc();
+//dotnet dev-certs https --trust
+builder.WebHost.ConfigureKestrel(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.ListenAnyIP(7148, listenOptions =>
     {
-        policy.AllowAnyOrigin() // Origen del frontend
-              .AllowAnyMethod()// Permitir GET, POST, etc.
-              .AllowAnyHeader(); // Permitir encabezados como Authorization
+        listenOptions.UseHttps(); // ✅ Usa el certificado por defecto o personalizado
+        listenOptions.Protocols = HttpProtocols.Http2;
     });
 });
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        BearerFormat = "JWT"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme
-                }
-            },
-            []
-        }
-    });
-    c.CustomSchemaIds(type => type.FullName);
-}
-);
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-app.UseSwagger();
-app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+app.UseHttpsRedirection();
 
-//app.UseHttpsRedirection();
-// Habilitar CORS antes de autenticación y autorización
-app.UseCors("AllowFrontend");
+app.MapGrpcService<LoginServiceImpl>();
+
 app.UseAuthorization();
 
 app.MapControllers();

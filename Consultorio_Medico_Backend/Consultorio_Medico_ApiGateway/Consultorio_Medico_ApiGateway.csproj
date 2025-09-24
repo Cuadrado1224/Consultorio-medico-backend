@@ -26,9 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Consulltorio_Medico_Administracion\Consulltorio_Medico_Administracion.csproj" />
-    <ProjectReference Include="..\Consulltorio_Medico_Autenticacion\Consulltorio_Medico_Autenticacion.csproj" />
-    <ProjectReference Include="..\Consulltorio_Medico_Consultas\Consulltorio_Medico_Consultas.csproj" />
 	  <Protobuf Include="protos\Login.proto" GrpcServices="Client" />
 	  <Protobuf Include="protos\AdministracionService.proto" GrpcServices="Client" />
 	  <Protobuf Include="protos\paciente.proto" GrpcServices="Client" />

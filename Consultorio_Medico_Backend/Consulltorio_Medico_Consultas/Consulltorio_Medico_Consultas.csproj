@@ -35,4 +35,6 @@
 		<Protobuf Include="Protos\AdministracionService.proto" GrpcServices="Client" />
 	</ItemGroup>
 
+	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://raw.githubusercontent.com/nekitdev/changelogging/main/changelogging.schema.json" /></VisualStudio></ProjectExtensions>
+
 </Project>

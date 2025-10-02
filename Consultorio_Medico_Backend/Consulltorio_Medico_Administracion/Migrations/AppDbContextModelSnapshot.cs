@@ -38,7 +38,7 @@ namespace Consultorio_Medico_Administracion.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Centros_Medicos");
+                    b.ToTable("Centros_Medicos", (string)null);
                 });
 
             modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Empleado", b =>
@@ -83,7 +83,7 @@ namespace Consultorio_Medico_Administracion.Migrations
 
                     b.HasIndex("tipo_empleadoID");
 
-                    b.ToTable("Empleados");
+                    b.ToTable("Empleados", (string)null);
                 });
 
             modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Especialidad", b =>
@@ -98,7 +98,7 @@ namespace Consultorio_Medico_Administracion.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Especialidades");
+                    b.ToTable("Especialidades", (string)null);
                 });
 
             modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Tipo_Empleado", b =>
@@ -113,7 +113,7 @@ namespace Consultorio_Medico_Administracion.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tipos_Empleados");
+                    b.ToTable("Tipos_Empleados", (string)null);
                 });
 
             modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Usuario", b =>
@@ -138,7 +138,7 @@ namespace Consultorio_Medico_Administracion.Migrations
                     b.HasIndex("empleadoId")
                         .IsUnique();
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Empleado", b =>

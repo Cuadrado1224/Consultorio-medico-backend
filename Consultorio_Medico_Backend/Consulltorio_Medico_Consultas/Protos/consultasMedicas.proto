@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+package consultas;
 option csharp_namespace = "ConsultasMedicas"; // Ajusta el namespace para que sea m�s espec�fico
 
 // Importamos los protos necesarios

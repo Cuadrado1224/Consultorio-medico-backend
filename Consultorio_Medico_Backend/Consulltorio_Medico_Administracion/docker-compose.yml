@@ -12,5 +12,24 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
 
+  mariadb-replica:
+    image: mariadb:11
+    container_name: mariadb-dev-replica
+    environment:
+      MARIADB_ROOT_PASSWORD: 200232
+      MARIADB_DATABASE: hospital
+      MARIADB_REPLICATION_MODE: replica
+      MARIADB_REPLICATION_USER: replica_user
+      MARIADB_REPLICATION_PASSWORD: replica_pass
+      MARIADB_MASTER_HOST: mariadb
+      MARIADB_MASTER_ROOT_PASSWORD: 200232
+    ports:
+      - "3317:3306"
+    depends_on:
+      - mariadb
+    volumes:
+      - mariadb_replica_data:/var/lib/mysql
+
 volumes:
   mariadb_data:
+  mariadb_replica_data:

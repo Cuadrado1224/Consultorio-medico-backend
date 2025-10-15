@@ -7,16 +7,50 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($" Cadena de conexión: {connectionString}");
+var mainConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection");
+
+string workingConnectionString = mainConnectionString;
+bool dbAvailable = true;
+
+// Probar conexión principal, si falla intenta con la réplica
+try
+{
+    using var conn = new MySqlConnection(mainConnectionString);
+    conn.Open();
+    Console.WriteLine("Conexión principal exitosa");
+}
+catch
+{
+    try
+    {
+        using var conn = new MySqlConnection(replicaConnectionString);
+        conn.Open();
+        workingConnectionString = replicaConnectionString;
+        Console.WriteLine("Conexión principal fallida, usando réplica");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"No se pudo conectar ni a la principal ni a la réplica: {ex.Message}");
+        dbAvailable = false;
+    }
+}
+
+Console.WriteLine($"Cadena de conexión en uso: {workingConnectionString}");
+
+if (!dbAvailable)
+{
+    Console.WriteLine("Advertencia: No se pudo conectar a ninguna base de datos. La aplicación arrancará, pero las operaciones que requieran base de datos fallarán.");
+}
 
 builder.Services.AddDbContext<AppDbContext>(
     options => {
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        options.UseMySql(workingConnectionString, ServerVersion.AutoDetect(workingConnectionString));
     }
     );
 
@@ -30,8 +64,6 @@ builder.WebHost.ConfigureKestrel(options =>
         listenOptions.Protocols = HttpProtocols.Http2;
     });
 });
-
-
 
 //JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
@@ -66,7 +98,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 
 });
-
 
 builder.Services.AddAuthorization(options =>
     options.AddPolicy("TipoEmpleadoPolitica", policy =>
@@ -110,7 +141,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -151,8 +181,6 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 }
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

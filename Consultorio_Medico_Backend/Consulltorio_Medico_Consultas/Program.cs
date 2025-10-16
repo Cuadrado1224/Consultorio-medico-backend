@@ -1,18 +1,50 @@
-
 using Microsoft.EntityFrameworkCore;
-
 using Consulltorio_Medico_Consultas.Data;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Consulltorio_Medico_Consultas.protos;
+using MySqlConnector;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-string? connectionString = builder.Configuration.GetConnectionString("HospitalConnection");
+string? mainConnectionString = builder.Configuration.GetConnectionString("HospitalConnection");
+string? replicaConnectionString = builder.Configuration.GetConnectionString("HospitalReplica");
+string? workingConnectionString = mainConnectionString;
+bool dbAvailable = true;
+
+// Failover master-master: intenta conectar a principal, si falla usa la réplica
+try
+{
+    using var conn = new MySqlConnection(mainConnectionString);
+    conn.Open();
+    Console.WriteLine("Conexión principal exitosa");
+}
+catch
+{
+    try
+    {
+        using var conn = new MySqlConnection(replicaConnectionString);
+        conn.Open();
+        workingConnectionString = replicaConnectionString;
+        Console.WriteLine("Conexión principal fallida, usando réplica");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"No se pudo conectar ni a la principal ni a la réplica: {ex.Message}");
+        dbAvailable = false;
+    }
+}
+
+Console.WriteLine($"Cadena de conexión en uso: {workingConnectionString}");
+if (!dbAvailable)
+{
+    Console.WriteLine("Advertencia: No se pudo conectar a ninguna base de datos. La aplicación arrancará, pero las operaciones que requieran base de datos fallarán.");
+}
+
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(workingConnectionString, ServerVersion.AutoDetect(workingConnectionString)));
 // Add services to the container.
 
 

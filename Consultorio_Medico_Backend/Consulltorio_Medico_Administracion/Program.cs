@@ -11,14 +11,12 @@ using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var mainConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection");
-
 string workingConnectionString = mainConnectionString;
 bool dbAvailable = true;
 
-// Probar conexión principal, si falla intenta con la réplica
+// Failover master-master: intenta conectar a principal, si falla usa la réplica
 try
 {
     using var conn = new MySqlConnection(mainConnectionString);
@@ -42,7 +40,6 @@ catch
 }
 
 Console.WriteLine($"Cadena de conexión en uso: {workingConnectionString}");
-
 if (!dbAvailable)
 {
     Console.WriteLine("Advertencia: No se pudo conectar a ninguna base de datos. La aplicación arrancará, pero las operaciones que requieran base de datos fallarán.");

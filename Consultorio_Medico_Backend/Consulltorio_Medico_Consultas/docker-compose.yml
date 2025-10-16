@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  mariadb:
+  mariadb-dev-con:
     image: mariadb:11
     container_name: mariadb-dev-con
     environment:
@@ -11,25 +11,26 @@ services:
       - "3309:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - consultorio_net
 
-  mariadb-replica:
+  mariadb-dev-con-replica:
     image: mariadb:11
     container_name: mariadb-dev-con-replica
     environment:
       MARIADB_ROOT_PASSWORD: 200232
       MARIADB_DATABASE: consultas
-      MARIADB_REPLICATION_MODE: replica
-      MARIADB_REPLICATION_USER: replica_user
-      MARIADB_REPLICATION_PASSWORD: replica_pass
-      MARIADB_MASTER_HOST: mariadb
-      MARIADB_MASTER_ROOT_PASSWORD: 200232
     ports:
       - "3319:3306"
-    depends_on:
-      - mariadb
     volumes:
       - mariadb_replica_data:/var/lib/mysql
+    networks:
+      - consultorio_net
 
 volumes:
   mariadb_data:
   mariadb_replica_data:
+
+networks:
+  consultorio_net:
+    driver: bridge

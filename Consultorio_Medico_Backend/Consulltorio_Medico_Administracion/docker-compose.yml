@@ -1,7 +1,7 @@
 version: '3.8'
 ## Docker para subir un servidor de base de datos mariadb de prueba para desarrollar el microservicio
 services:
-  mariadb:
+  mariadb-dev:
     image: mariadb:11
     container_name: mariadb-dev
     environment:
@@ -11,18 +11,21 @@ services:
       - "3307:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./mariadb-init/master-init.sql:/docker-entrypoint-initdb.d/master-init.sql
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
 
-  mariadb-master2:
+  mariadb-dev-replica:
     image: mariadb:11
-    container_name: mariadb-dev-master2
+    container_name: mariadb-dev-replica
     environment:
       MARIADB_ROOT_PASSWORD: 200232
       MARIADB_DATABASE: hospital
     ports:
       - "3317:3306"
     volumes:
-      - mariadb_master2_data:/var/lib/mysql
+      - mariadb_replica_data:/var/lib/mysql
+    command: --server-id=2 --log-bin=mysql-bin --binlog-format=ROW
 
 volumes:
   mariadb_data:
-  mariadb_master2_data:
+  mariadb_replica_data:

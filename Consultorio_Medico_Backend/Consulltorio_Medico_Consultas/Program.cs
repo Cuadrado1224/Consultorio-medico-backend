@@ -111,7 +111,30 @@ WebApplication app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-    db.Database.Migrate(); // <-- esto aplica las migraciones
+    // Verifica si la tabla 'Paciente' existe antes de migrar
+    bool pacienteTableExists = false;
+    try
+    {
+        var conn = db.Database.GetDbConnection();
+        conn.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "SHOW TABLES LIKE 'Paciente'";
+        using var reader = cmd.ExecuteReader();
+        pacienteTableExists = reader.HasRows;
+        conn.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error verificando la tabla Paciente: {ex.Message}");
+    }
+    if (!pacienteTableExists)
+    {
+        db.Database.Migrate(); // Aplica migraciones solo si la tabla no existe
+    }
+    else
+    {
+        Console.WriteLine("La tabla 'Paciente' ya existe. No se aplican migraciones automáticas.");
+    }
 }
 
 app.MapGrpcService<PacienteServiceImpl>();

@@ -149,7 +149,30 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // <-- esto aplica las migraciones
+    // Verifica si la tabla 'Especialidades' existe antes de migrar
+    bool especialidadesTableExists = false;
+    try
+    {
+        var conn = db.Database.GetDbConnection();
+        conn.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "SHOW TABLES LIKE 'Especialidades'";
+        using var reader = cmd.ExecuteReader();
+        especialidadesTableExists = reader.HasRows;
+        conn.Close();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error verificando la tabla Especialidades: {ex.Message}");
+    }
+    if (!especialidadesTableExists)
+    {
+        db.Database.Migrate(); // Aplica migraciones solo si la tabla no existe
+    }
+    else
+    {
+        Console.WriteLine("La tabla 'Especialidades' ya existe. No se aplican migraciones automáticas.");
+    }
     if (!db.Especialidades.Any())
     {
         db.Especialidades.Add(new Consulltorio_Medico_Administracion.Models.Especialidad { Id = 1, especialidad = "Sin Especialidad" });

@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using MySqlConnector;
+using Npgsql;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +17,10 @@ var replicaConnectionString = builder.Configuration.GetConnectionString("Replica
 string workingConnectionString = mainConnectionString;
 bool dbAvailable = true;
 
-// Failover master-master: intenta conectar a principal, si falla usa la réplica
+// Failover: intenta conectar a principal, si falla usa la réplica
 try
 {
-    using var conn = new MySqlConnection(mainConnectionString);
+    using var conn = new NpgsqlConnection(mainConnectionString);
     conn.Open();
     Console.WriteLine("Conexión principal exitosa");
 }
@@ -27,7 +28,7 @@ catch
 {
     try
     {
-        using var conn = new MySqlConnection(replicaConnectionString);
+        using var conn = new NpgsqlConnection(replicaConnectionString);
         conn.Open();
         workingConnectionString = replicaConnectionString;
         Console.WriteLine("Conexión principal fallida, usando réplica");
@@ -46,9 +47,7 @@ if (!dbAvailable)
 }
 
 builder.Services.AddDbContext<AppDbContext>(
-    options => {
-        options.UseMySql(workingConnectionString, ServerVersion.AutoDetect(workingConnectionString));
-    }
+    options => { options.UseNpgsql(workingConnectionString); }
     );
 
 builder.Services.AddGrpc();
@@ -109,9 +108,6 @@ builder.Services.AddAuthorization(options =>
 // JWT en Swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tu API", Version = "v1" });
-    //c.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
-    // Configuración de seguridad JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme",
@@ -156,9 +152,9 @@ using (var scope = app.Services.CreateScope())
         var conn = db.Database.GetDbConnection();
         conn.Open();
         using var cmd = conn.CreateCommand();
-        cmd.CommandText = "SHOW TABLES LIKE 'Especialidades'";
-        using var reader = cmd.ExecuteReader();
-        especialidadesTableExists = reader.HasRows;
+        cmd.CommandText = "SELECT to_regclass('public.\\\"Especialidades\\\"')";
+        var result = cmd.ExecuteScalar();
+        especialidadesTableExists = result != DBNull.Value && result != null;
         conn.Close();
     }
     catch (Exception ex)

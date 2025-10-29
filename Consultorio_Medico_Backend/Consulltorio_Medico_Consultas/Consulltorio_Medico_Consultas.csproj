@@ -28,7 +28,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
 		<Protobuf Include="Protos\consultasMedicas.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\paciente.proto" GrpcServices="Server" />

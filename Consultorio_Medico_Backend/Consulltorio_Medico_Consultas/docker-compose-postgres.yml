@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres-main:
+    image: postgres:16
+    container_name: postgres-main
+    environment:
+      POSTGRES_DB: consultas
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 200232
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  postgres-replica:
+    image: postgres:16
+    container_name: postgres-replica
+    environment:
+      POSTGRES_DB: consultas
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 200232
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  postgres_replica_data:

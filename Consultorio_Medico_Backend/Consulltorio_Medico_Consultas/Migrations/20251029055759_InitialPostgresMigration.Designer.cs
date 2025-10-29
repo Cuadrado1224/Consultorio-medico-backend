@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Consulltorio_Medico_Consultas.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250930234122_initial")]
-    partial class initial
+    [Migration("20251029055759_InitialPostgresMigration")]
+    partial class InitialPostgresMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,41 +21,45 @@ namespace Consulltorio_Medico_Consultas.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.20")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Consulltorio_Medico_Consultas.Models.ConsultasMedicasEntity", b =>
                 {
                     b.Property<int>("id_consulta_medica")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id_consulta_medica"));
 
                     b.Property<string>("diagnostico")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("fecha")
                         .HasColumnType("date");
 
                     b.Property<string>("hora")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("id_centro_medico")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("id_empleado")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("motivo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("pacienteid_paciente")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("tratamiento")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("id_consulta_medica");
 
@@ -67,29 +72,31 @@ namespace Consulltorio_Medico_Consultas.Migrations
                 {
                     b.Property<int>("id_paciente")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id_paciente"));
 
                     b.Property<string>("cedula")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("direccion")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("fecha_nacimiento")
                         .HasColumnType("date");
 
                     b.Property<int>("id_centro_medico")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("nombre")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("telefono")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("id_paciente");
 

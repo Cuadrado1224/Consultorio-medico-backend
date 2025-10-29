@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Consulltorio_Medico_Consultas.protos;
-using MySqlConnector;
+using Npgsql;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +15,10 @@ string? replicaConnectionString = builder.Configuration.GetConnectionString("Hos
 string? workingConnectionString = mainConnectionString;
 bool dbAvailable = true;
 
-// Failover master-master: intenta conectar a principal, si falla usa la réplica
+// Failover: intenta conectar a principal, si falla usa la réplica
 try
 {
-    using var conn = new MySqlConnection(mainConnectionString);
+    using var conn = new NpgsqlConnection(mainConnectionString);
     conn.Open();
     Console.WriteLine("Conexión principal exitosa");
 }
@@ -25,7 +26,7 @@ catch
 {
     try
     {
-        using var conn = new MySqlConnection(replicaConnectionString);
+        using var conn = new NpgsqlConnection(replicaConnectionString);
         conn.Open();
         workingConnectionString = replicaConnectionString;
         Console.WriteLine("Conexión principal fallida, usando réplica");
@@ -44,7 +45,7 @@ if (!dbAvailable)
 }
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseMySql(workingConnectionString, ServerVersion.AutoDetect(workingConnectionString)));
+    options.UseNpgsql(workingConnectionString));
 // Add services to the container.
 
 
@@ -61,7 +62,6 @@ builder.WebHost.ConfigureKestrel(options =>
 
 
 //migracion
-
 
 
 //JWT
@@ -118,9 +118,9 @@ using (var scope = app.Services.CreateScope())
         var conn = db.Database.GetDbConnection();
         conn.Open();
         using var cmd = conn.CreateCommand();
-        cmd.CommandText = "SHOW TABLES LIKE 'Paciente'";
-        using var reader = cmd.ExecuteReader();
-        pacienteTableExists = reader.HasRows;
+        cmd.CommandText = "SELECT to_regclass('public.\"Paciente\"')";
+        var result = cmd.ExecuteScalar();
+        pacienteTableExists = result != DBNull.Value && result != null;
         conn.Close();
     }
     catch (Exception ex)
@@ -140,7 +140,7 @@ using (var scope = app.Services.CreateScope())
 app.MapGrpcService<PacienteServiceImpl>();
 app.MapGrpcService<ConsultasServiceImpl>();
 
-app.MapGet("/", () => "Comunicacion a trav�s de GRPC");
+app.MapGet("/", () => "Comunicacion a trav\u00e9s de GRPC");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

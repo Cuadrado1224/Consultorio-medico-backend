@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres-main:
+    image: postgres:16
+    container_name: postgres-main-admin
+    environment:
+      POSTGRES_DB: hospital
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 200232
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data_admin:/var/lib/postgresql/data
+
+  postgres-replica:
+    image: postgres:16
+    container_name: postgres-replica-admin
+    environment:
+      POSTGRES_DB: hospital
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 200232
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_replica_data_admin:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_admin:
+  postgres_replica_data_admin:

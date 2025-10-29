@@ -3,6 +3,7 @@ using Consulltorio_Medico_Administracion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -16,64 +17,70 @@ namespace Consultorio_Medico_Administracion.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.15")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Centro_Medico", b =>
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Centro_Medico", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ciudad")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("direccion")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("nombre")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Centros_Medicos", (string)null);
+                    b.ToTable("Centros_Medicos");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Empleado", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Empleado", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("cedula")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("centro_medicoID")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("especialidadID")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("nombre")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<double>("salario")
-                        .HasColumnType("double");
+                        .HasColumnType("double precision");
 
                     b.Property<string>("telefono")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("tipo_empleadoID")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -83,79 +90,85 @@ namespace Consultorio_Medico_Administracion.Migrations
 
                     b.HasIndex("tipo_empleadoID");
 
-                    b.ToTable("Empleados", (string)null);
+                    b.ToTable("Empleados");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Especialidad", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Especialidad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("especialidad")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Especialidades", (string)null);
+                    b.ToTable("Especialidades");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Tipo_Empleado", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Tipo_Empleado", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("tipo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tipos_Empleados", (string)null);
+                    b.ToTable("Tipos_Empleados");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Usuario", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("contraseña")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("empleadoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("nombre_usuario")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("empleadoId")
                         .IsUnique();
 
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Empleado", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Empleado", b =>
                 {
-                    b.HasOne("Consultorio_Medico_Administracion.Models.Centro_Medico", "Centro_Medico")
+                    b.HasOne("Consulltorio_Medico_Administracion.Models.Centro_Medico", "Centro_Medico")
                         .WithMany()
                         .HasForeignKey("centro_medicoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Consultorio_Medico_Administracion.Models.Especialidad", "Especialidad")
+                    b.HasOne("Consulltorio_Medico_Administracion.Models.Especialidad", "Especialidad")
                         .WithMany()
                         .HasForeignKey("especialidadID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Consultorio_Medico_Administracion.Models.Tipo_Empleado", "Tipo_Empleado")
+                    b.HasOne("Consulltorio_Medico_Administracion.Models.Tipo_Empleado", "Tipo_Empleado")
                         .WithMany()
                         .HasForeignKey("tipo_empleadoID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -168,11 +181,11 @@ namespace Consultorio_Medico_Administracion.Migrations
                     b.Navigation("Tipo_Empleado");
                 });
 
-            modelBuilder.Entity("Consultorio_Medico_Administracion.Models.Usuario", b =>
+            modelBuilder.Entity("Consulltorio_Medico_Administracion.Models.Usuario", b =>
                 {
-                    b.HasOne("Consultorio_Medico_Administracion.Models.Empleado", "empleado")
+                    b.HasOne("Consulltorio_Medico_Administracion.Models.Empleado", "empleado")
                         .WithOne()
-                        .HasForeignKey("Consultorio_Medico_Administracion.Models.Usuario", "empleadoId")
+                        .HasForeignKey("Consulltorio_Medico_Administracion.Models.Usuario", "empleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

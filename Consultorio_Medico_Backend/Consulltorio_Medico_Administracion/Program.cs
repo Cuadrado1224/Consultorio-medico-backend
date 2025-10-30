@@ -9,28 +9,62 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Npgsql;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using MySqlConnector;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var mainConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection");
-string workingConnectionString = mainConnectionString;
+// 1 = MariaDB, 2 = PostgreSQL
+int nombreBaseDatos = 2; // cambia este valor para alternar
+
+string? mainConnectionString;
+string? replicaConnectionString;
+
+if (nombreBaseDatos == 1)
+{
+    mainConnectionString = builder.Configuration.GetConnectionString("DefaultConnectionMariaDb");
+    replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnectionMariaDb");
+}
+else
+{
+    mainConnectionString = builder.Configuration.GetConnectionString("DefaultConnectionNpgsql");
+    replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnectionNpgsql");
+}
+
+string? workingConnectionString = mainConnectionString;
 bool dbAvailable = true;
 
 // Failover: intenta conectar a principal, si falla usa la réplica
 try
 {
-    using var conn = new NpgsqlConnection(mainConnectionString);
-    conn.Open();
+    if (nombreBaseDatos == 1)
+    {
+        using var conn = new MySqlConnection(mainConnectionString);
+        conn.Open();
+    }
+    else
+    {
+        using var conn = new NpgsqlConnection(mainConnectionString);
+        conn.Open();
+    }
     Console.WriteLine("Conexión principal exitosa");
 }
 catch
 {
     try
     {
-        using var conn = new NpgsqlConnection(replicaConnectionString);
-        conn.Open();
-        workingConnectionString = replicaConnectionString;
+        if (nombreBaseDatos == 1)
+        {
+            using var conn = new MySqlConnection(replicaConnectionString);
+            conn.Open();
+            workingConnectionString = replicaConnectionString;
+        }
+        else
+        {
+            using var conn = new NpgsqlConnection(replicaConnectionString);
+            conn.Open();
+            workingConnectionString = replicaConnectionString;
+        }
         Console.WriteLine("Conexión principal fallida, usando réplica");
     }
     catch (Exception ex)
@@ -46,9 +80,18 @@ if (!dbAvailable)
     Console.WriteLine("Advertencia: No se pudo conectar a ninguna base de datos. La aplicación arrancará, pero las operaciones que requieran base de datos fallarán.");
 }
 
-builder.Services.AddDbContext<AppDbContext>(
-    options => { options.UseNpgsql(workingConnectionString); }
-    );
+// Registrar DbContext según proveedor
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    if (nombreBaseDatos == 1)
+    {
+        options.UseMySql(workingConnectionString, ServerVersion.AutoDetect(workingConnectionString));
+    }
+    else
+    {
+        options.UseNpgsql(workingConnectionString);
+    }
+});
 
 builder.Services.AddGrpc();
 //dotnet dev-certs https --trust
@@ -145,30 +188,74 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    // Verifica si la tabla 'Especialidades' existe antes de migrar
+    // Verifica si la tabla 'Especialidades' exista antes de migrar
     bool especialidadesTableExists = false;
     try
     {
         var conn = db.Database.GetDbConnection();
         conn.Open();
         using var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT to_regclass('public.\\\"Especialidades\\\"')";
-        var result = cmd.ExecuteScalar();
-        especialidadesTableExists = result != DBNull.Value && result != null;
+        // Verificar según proveedor
+        if (nombreBaseDatos == 1)
+        {
+            cmd.CommandText = "SHOW TABLES LIKE 'Especialidades'";
+            using var reader = cmd.ExecuteReader();
+            especialidadesTableExists = reader.HasRows;
+        }
+        else
+        {
+            cmd.CommandText = "SELECT to_regclass('public.\\\"Especialidades\\\"')";
+            var result = cmd.ExecuteScalar();
+            especialidadesTableExists = result != DBNull.Value && result != null;
+        }
         conn.Close();
     }
     catch (Exception ex)
     {
         Console.WriteLine($"Error verificando la tabla Especialidades: {ex.Message}");
     }
+
+    // Si no existe la tabla, revisa migraciones pendientes y si son compatibles con el proveedor actual
     if (!especialidadesTableExists)
     {
-        db.Database.Migrate(); // Aplica migraciones solo si la tabla no existe
+        try
+        {
+            var pending = db.Database.GetPendingMigrations().ToList();
+            if (!pending.Any())
+            {
+                Console.WriteLine("No hay migraciones pendientes.");
+            }
+            else
+            {
+                bool containsMaria = pending.Any(m => m.IndexOf("Maria", StringComparison.OrdinalIgnoreCase) >= 0 || m.IndexOf("MySql", StringComparison.OrdinalIgnoreCase) >= 0);
+                bool containsPostgres = pending.Any(m => m.IndexOf("Postgres", StringComparison.OrdinalIgnoreCase) >= 0 || m.IndexOf("Npgsql", StringComparison.OrdinalIgnoreCase) >= 0);
+
+                if (nombreBaseDatos == 1 && containsPostgres && !containsMaria)
+                {
+                    Console.WriteLine("Se detectaron migraciones de Postgres pero el proveedor actual es MariaDB. No se aplicarán migraciones automáticas.");
+                }
+                else if (nombreBaseDatos == 2 && containsMaria && !containsPostgres)
+                {
+                    Console.WriteLine("Se detectaron migraciones de MariaDB pero el proveedor actual es PostgreSQL. No se aplicarán migraciones automáticas.");
+                }
+                else
+                {
+                    Console.WriteLine($"Aplicando migraciones pendientes: {string.Join(", ", pending)}");
+                    db.Database.Migrate(); // Aplica migraciones solo si parecen compatibles
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al aplicar migraciones: {ex.Message}");
+        }
     }
     else
     {
         Console.WriteLine("La tabla 'Especialidades' ya existe. No se aplican migraciones automáticas.");
     }
+
+    // seed data
     if (!db.Especialidades.Any())
     {
         db.Especialidades.Add(new Consulltorio_Medico_Administracion.Models.Especialidad { Id = 1, especialidad = "Sin Especialidad" });

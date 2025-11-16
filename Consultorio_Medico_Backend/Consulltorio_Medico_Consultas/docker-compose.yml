@@ -10,7 +10,8 @@ services:
     ports:
       - "3309:3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_data_con:/var/lib/mysql
+    command: --server-id=3 --log-bin=mysql-bin-con --binlog-format=ROW
     networks:
       - consultorio_net
 
@@ -23,13 +24,14 @@ services:
     ports:
       - "3319:3306"
     volumes:
-      - mariadb_replica_data:/var/lib/mysql
+      - mariadb_replica_data_con:/var/lib/mysql
+    command: --server-id=4 --log-bin=mysql-bin-con --binlog-format=ROW --relay-log=mysql-relay-bin-con
     networks:
       - consultorio_net
 
 volumes:
-  mariadb_data:
-  mariadb_replica_data:
+  mariadb_data_con:
+  mariadb_replica_data_con:
 
 networks:
   consultorio_net:

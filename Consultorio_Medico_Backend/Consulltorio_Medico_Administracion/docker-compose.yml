@@ -1,5 +1,5 @@
 version: '3.8'
-## Docker para subir un servidor de base de datos mariadb de prueba para desarrollar el microservicio
+
 services:
   mariadb-dev:
     image: mariadb:11
@@ -12,7 +12,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb-init/master-init.sql:/docker-entrypoint-initdb.d/master-init.sql
-    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW --bind-address=0.0.0.0
 
   mariadb-dev-replica:
     image: mariadb:11
@@ -24,7 +24,9 @@ services:
       - "3317:3306"
     volumes:
       - mariadb_replica_data:/var/lib/mysql
-    command: --server-id=2 --log-bin=mysql-bin --binlog-format=ROW
+    command: --server-id=2 --log-bin=mysql-bin --binlog-format=ROW --relay-log=mysql-relay-bin --bind-address=0.0.0.0
+    depends_on:
+      - mariadb-dev
 
 volumes:
   mariadb_data:
